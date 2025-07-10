@@ -35,7 +35,16 @@ export class Servico {
 
   @IsNotEmpty()
   @IsNumber()
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
+  @Column({
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: false,
+    transformer: {
+      from: (value: string) => parseFloat(value),
+      to: (value: number) => value,
+    },
+  })
   @ApiProperty({
     example: '1000,00',
     description: 'Valor combinado para o projeto',
