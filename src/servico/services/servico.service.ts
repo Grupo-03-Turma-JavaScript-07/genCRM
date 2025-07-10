@@ -1,13 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, ILike, Repository } from 'typeorm';
+import { CategoriaService } from '../../categoria/services/categoria.service';
+import { Servico } from '../entities/servico.entity';
 
 @Injectable()
 export class ServicoService {
   constructor(
     @InjectRepository(Servico) //importar Entity
     private servicoRepository: Repository<Servico>,
-    private CategoriaService: CategoriaService, //importar
+    private categoriaService: CategoriaService, //importar
   ) {}
 
   async findAll(): Promise<Servico[]> {
@@ -49,14 +51,14 @@ export class ServicoService {
   }
 
   async create(servico: Servico): Promise<Servico> {
-    await this.CategoriaService.findById(servico.categoria.id);
+    await this.categoriaService.findById(servico.categoria.id);
     return await this.servicoRepository.save(servico);
   }
 
   async update(servico: Servico): Promise<Servico> {
     await this.findById(servico.id);
 
-    await this.CategoriaService.findById(servico.categoria.id);
+    await this.categoriaService.findById(servico.categoria.id);
 
     return await this.servicoRepository.save(servico);
   }
