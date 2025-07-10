@@ -2,14 +2,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, ILike, Repository } from 'typeorm';
 import { CategoriaService } from '../../categoria/services/categoria.service';
+import { UsuarioService } from '../../usuario/services/usuario.service';
 import { Servico } from '../entities/servico.entity';
 
 @Injectable()
 export class ServicoService {
   constructor(
-    @InjectRepository(Servico) //importar Entity
+    @InjectRepository(Servico)
     private servicoRepository: Repository<Servico>,
-    private categoriaService: CategoriaService, //importar
+    private categoriaService: CategoriaService,
+    private usuarioService: UsuarioService,
   ) {}
 
   async findAll(): Promise<Servico[]> {
@@ -50,6 +52,14 @@ export class ServicoService {
     });
   }
 
+  async entregas(usuario: number): Promise<number> {
+    const buscaUsuario = await this.usuarioService.findById(usuario);
+
+    const lista = buscaUsuario.servico;
+    const entregas = lista.length;
+    return entregas;
+  }
+
   async create(servico: Servico): Promise<Servico> {
     await this.categoriaService.findById(servico.categoria.id);
     return await this.servicoRepository.save(servico);
@@ -61,6 +71,26 @@ export class ServicoService {
     await this.categoriaService.findById(servico.categoria.id);
 
     return await this.servicoRepository.save(servico);
+  }
+
+  async status(id: number): Promise<Servico> {
+    const atualizar = await this.findById(id);
+
+    atualizar.status = 'finalizado';
+
+    return await this.servicoRepository.save(atualizar);
+  }
+
+  async descontoCupom(id: number): Promise<Servico> {
+    const servicoid = await this.findById(id);
+    let desconto: number;
+    const pagVista = true;
+    if (pagVista) {
+      desconto = servicoid.valor * 0.15;
+      servicoid.valor = servicoid.valor - desconto;
+    }
+
+    return await this.servicoRepository.save(servicoid);
   }
 
   async delete(id: number): Promise<DeleteResult> {
