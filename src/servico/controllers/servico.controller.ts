@@ -42,6 +42,12 @@ export class ServicoController {
     return this.servicoService.findAllByNome(nome);
   }
 
+  @Get('/:usuario')
+  @HttpCode(HttpStatus.OK)
+  entregas(@Param('usuario', ParseIntPipe) usuario: number): Promise<number> {
+    return this.servicoService.entregas(usuario);
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() servico: Servico): Promise<Servico> {
@@ -52,6 +58,18 @@ export class ServicoController {
   @HttpCode(HttpStatus.OK)
   update(@Body() servico: Servico): Promise<Servico> {
     return this.servicoService.update(servico);
+  }
+
+  @Put('/:id')
+  @HttpCode(HttpStatus.OK)
+  status(@Param('id', ParseIntPipe) id: number): Promise<Servico> {
+    return this.servicoService.status(id);
+  }
+
+  @Put('/desconto')
+  @HttpCode(HttpStatus.OK)
+  descontoCupom(@Body() id: number): Promise<Servico> {
+    return this.servicoService.descontoCupom(id);
   }
 
   @Delete('/:id')
