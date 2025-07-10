@@ -13,7 +13,6 @@ export class UsuarioService {
   ) {}
 
   async findByUsuario(usuario: string): Promise<Usuario | null> {
-    
     return await this.usuarioRepository.findOne({
       where: {
         usuario: usuario,
