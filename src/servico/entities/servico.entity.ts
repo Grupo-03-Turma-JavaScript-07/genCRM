@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Categoria } from '../../categoria/entities/categoria.entity';
 import { Usuario } from '../../usuario/entities/usuario.entity';
 
@@ -18,7 +12,6 @@ export class Servico {
   })
   id: number;
 
-
   @IsNotEmpty()
   @IsString()
   @Column({ length: 100, nullable: false })
@@ -29,17 +22,16 @@ export class Servico {
   })
   nome: string;
 
-
   @IsNotEmpty()
   @IsString()
   @Column({ length: 1000, nullable: false })
   @ApiProperty({
-    example: 'Academia Gaviões solicitou um software para gerenciar treinos dos seus alunos',
+    example:
+      'Academia Gaviões solicitou um software para gerenciar treinos dos seus alunos',
     description: 'Um breve resumo do projeto',
     required: true,
   })
   descricao: string;
-
 
   @IsNotEmpty()
   @IsNumber()
@@ -51,17 +43,16 @@ export class Servico {
   })
   valor: number;
 
-  
   @IsNotEmpty()
   @IsString()
   @Column({ length: 50, nullable: false })
   @ApiProperty({
-    example: "Ativo",
-    description: 'Status em que se encontra o projeto, ativo/finalizado/pendente',
+    example: 'Ativo',
+    description:
+      'Status em que se encontra o projeto, ativo/finalizado/pendente',
     required: true,
   })
   status: string;
-
 
   @ApiProperty({ type: () => Categoria })
   @ManyToOne(() => Categoria, (categoria) => categoria.servico, {
