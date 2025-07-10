@@ -62,14 +62,6 @@ export class Servico {
   })
   status: string;
 
-  
-  @UpdateDateColumn()
-  @ApiProperty({
-    example: "29/08/2024",
-    description: 'Data em que esta previsto a finalização do projeto ou que finalizou',
-    required: true,
-  })
-  data: Date;
 
   @ApiProperty({ type: () => Categoria })
   @ManyToOne(() => Categoria, (categoria) => categoria.servico, {
