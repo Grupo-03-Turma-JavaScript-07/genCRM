@@ -52,7 +52,7 @@ export class ServicoService {
     });
   }
 
-  async entregas(usuario: number): Promise<number> {
+  async qtdServicosByUsuario(usuario: number): Promise<number> {
     const buscaUsuario = await this.usuarioService.findById(usuario);
 
     const lista = buscaUsuario.servico;
@@ -76,7 +76,7 @@ export class ServicoService {
   async status(id: number): Promise<Servico> {
     const atualizar = await this.findById(id);
 
-    atualizar.status = 'finalizado';
+    atualizar.status = 'Finalizado';
 
     return await this.servicoRepository.save(atualizar);
   }

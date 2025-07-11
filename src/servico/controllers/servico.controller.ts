@@ -42,10 +42,12 @@ export class ServicoController {
     return this.servicoService.findAllByNome(nome);
   }
 
-  @Get('/:usuario')
+  @Get('servicos/:usuario')
   @HttpCode(HttpStatus.OK)
-  entregas(@Param('usuario', ParseIntPipe) usuario: number): Promise<number> {
-    return this.servicoService.entregas(usuario);
+  qtdServicosByUsuario(
+    @Param('usuario', ParseIntPipe) usuario: number,
+  ): Promise<number> {
+    return this.servicoService.qtdServicosByUsuario(usuario);
   }
 
   @Post()
@@ -66,9 +68,9 @@ export class ServicoController {
     return this.servicoService.status(id);
   }
 
-  @Put('/desconto')
+  @Put('/desconto/:id')
   @HttpCode(HttpStatus.OK)
-  descontoCupom(@Body() id: number): Promise<Servico> {
+  descontoCupom(@Param('id', ParseIntPipe) id: number): Promise<Servico> {
     return this.servicoService.descontoCupom(id);
   }
 
