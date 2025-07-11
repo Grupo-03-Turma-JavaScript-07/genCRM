@@ -1,20 +1,26 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AuthModule } from './auth/auth.Module';
+import { CategoriaModule } from './categoria/categoria.module';
+import { ServicoModule } from './servico/servico.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { DevService } from './data/services/dev.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'db_gencrm',
-      entities: [],
-      synchronize: true,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      useClass: DevService,
+      imports: [ConfigModule],
     }),
+    ServicoModule,
+    CategoriaModule,
+    AuthModule,
+    UsuarioModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
