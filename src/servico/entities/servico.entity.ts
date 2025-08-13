@@ -34,7 +34,7 @@ export class Servico {
   descricao: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  //@IsNumber()
   @Column({
     type: 'decimal',
     precision: 10,
